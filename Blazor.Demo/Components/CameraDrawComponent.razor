@@ -1,0 +1,26 @@
+﻿<div class="d-flex flex-column gap-3">
+    <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-primary" @onclick="StartCameraAsync">Iniciar camara</button>
+        <button type="button" class="btn btn-outline-primary" @onclick="TakePhotoAsync">Tomar foto</button>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">Camara</div>
+                <div class="card-body">
+                    <video @ref="VideoReference" autoplay playsinline class="w-100 border rounded" style="min-height: 280px;"></video>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">Lienzo</div>
+                <div class="card-body">
+                    <canvas @ref="CanvasReference" width="640" height="480" class="w-100 border rounded" style="touch-action: none;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
