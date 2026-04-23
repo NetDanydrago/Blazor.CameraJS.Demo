@@ -42,7 +42,29 @@ export class CameraDrawComponent {
 }
 ```
 
+## Nuevas funcionalidades (Dibujo en canvas)
+
+- Controles de pintura: se han añadido controles para seleccionar el **color** y el **grosor** del lápiz.
+- Soporte de dibujo táctil y con ratón directamente sobre el `canvas` después de capturar la foto.
+- El código JS ahora mantiene estado de dibujo (`isDrawing`, `penColor`, `penThickness`) y enlaza eventos de mouse/touch para `startDraw`, `draw` y `endDraw`.
+- Métodos JS expuestos para interactuar desde C#:
+	- `setPenColor(color)` — actualiza el color del lápiz.
+	- `setPenThickness(thickness)` — actualiza el grosor del lápiz.
+	- `bindCanvasEvents()` / `unbindCanvasEvents()` — (internos) asocian y eliminan handlers de eventos.
+
+### Comportamiento de usuario
+
+- Inicia la cámara y toma una foto como antes.
+- Tras capturar la imagen, usa el selector de color y el deslizador de grosor para dibujar sobre el canvas.
+- El dibujo funciona con ratón y con gestos táctiles (touchstart/touchmove/touchend).
+
+### Notas de implementación
+
+- En `CameraDrawComponent.razor` se añadieron los controles UI para color (`input type="color"`) y grosor (`input type="range"`).
+- En `CameraDrawComponent.razor.cs` se exponen `OnPenColorChanged` y `OnPenThicknessChanged` que llaman a `setPenColor` y `setPenThickness` en el módulo JS cuando el canvas está inicializado.
+- En `CameraDrawComponent.razor.js` se implementaron las funciones de dibujo, transformación de coordenadas (para escalar correctamente sobre el canvas) y el enlace/desenlace de eventos.
+
 ## Próximos pasos
 
-- Se agregará funcionalidad para pintar sobre la foto capturada en el canvas.
-- Posteriormente, se podrá subir la imagen editada a una API.
+- Añadir herramientas de edición adicionales (importar/guardar imagen).
+- Posibilidad de exportar la imagen editada y subirla a una API.

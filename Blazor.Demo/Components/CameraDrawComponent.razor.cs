@@ -18,6 +18,12 @@ public partial class CameraDrawComponent : IAsyncDisposable
     private bool IsCanvasInitialized { get; set; }
     private bool IsCameraActive { get; set; }
 
+
+    private string PenColor { get; set; }
+    private int PenThickness { get; set; } = 1;
+
+
+
     public CameraDrawComponent()
     {
         ModuleReferenceSource = new();
@@ -56,6 +62,32 @@ public partial class CameraDrawComponent : IAsyncDisposable
         {
             IJSObjectReference cameraDrawReference = await CameraDrawReferenceSource.Task;
             await cameraDrawReference.InvokeVoidAsync("takePhoto");
+        }
+    }
+
+
+    private async Task OnPenColorChanged(ChangeEventArgs changeEventArgs)
+    {
+        string color = string.Empty;
+        if (changeEventArgs.Value is string stringValue)
+            color = stringValue;
+        if (string.IsNullOrWhiteSpace(color))
+            color = "#000000";
+        PenColor = color;
+        if (IsCanvasInitialized)
+        {
+            IJSObjectReference cameraDrawReference = await CameraDrawReferenceSource.Task;
+            await cameraDrawReference.InvokeVoidAsync("setPenColor", PenColor);
+        }
+    }
+
+    private async Task OnPenThicknessChanged()
+    {
+        int thickness = PenThickness;
+        if (IsCanvasInitialized)
+        {
+            IJSObjectReference cameraDrawReference = await CameraDrawReferenceSource.Task;
+            await cameraDrawReference.InvokeVoidAsync("setPenThickness", thickness);
         }
     }
 
